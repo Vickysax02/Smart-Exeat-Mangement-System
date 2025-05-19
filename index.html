@@ -7,13 +7,33 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-  <h1 class="text-3xl font-bold text-blue-600 mb-6">Welcome to Smart Exeat System</h1>
-  <div class="space-y-3">
-    <a href="pages/student.html" class="block bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 text-center">Student Portal</a>
-    <a href="pages/hostel-login.html" class="block bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 text-center">Hostel Master</a>
-    <a href="pages/dsa-login.html" class="block bg-yellow-500 text-white px-6 py-3 rounded hover:bg-yellow-600 text-center">DSA Portal</a>
-    <a href="pages/gate.html" class="block bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600 text-center">Gate Officer</a>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
+  <h1 class="text-3xl font-bold text-blue-600 mb-8">Welcome to Smart Exeat System</h1>
+  
+  <div class="space-y-5 w-full max-w-sm">
+    <!-- Student -->
+    <div class="text-center">
+      <a href="pages/student-login.html" class="block bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 mb-1">Student Login</a>
+      <p class="text-sm text-gray-600">For students to submit and track exeat requests</p>
+    </div>
+
+    <!-- Hostel Master -->
+    <div class="text-center">
+      <a href="pages/hostel-login.html" class="block bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 mb-1">Hostel Master Login</a>
+      <p class="text-sm text-gray-600">For hostel masters to approve student exeat forms</p>
+    </div>
+
+    <!-- DSA -->
+    <div class="text-center">
+      <a href="pages/dsa-login.html" class="block bg-yellow-500 text-white px-6 py-3 rounded hover:bg-yellow-600 mb-1">DSA Login</a>
+      <p class="text-sm text-gray-600">For DSA to finalize and forward exeat requests</p>
+    </div>
+
+    <!-- Gate Officer -->
+    <div class="text-center">
+      <a href="pages/gate-login.html" class="block bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600 mb-1">Gate Officer Login</a>
+      <p class="text-sm text-gray-600">For gate officers to sign students out based on approval</p>
+    </div>
   </div>
 
   <script type="module" src="/js/main.js"></script>

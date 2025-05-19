@@ -7,7 +7,8 @@ import {
   updateDoc,
   doc,
   query,
-  orderBy
+  orderBy,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
 
 // Firebase config
@@ -59,7 +60,7 @@ async function loadRequests() {
           <p><strong>Reason:</strong> ${data.reason}</p>
           <p><strong>Parent Phone:</strong> ${data.parentPhone}</p>
           <button onclick="approve('${docSnap.id}')" 
-            class="bg-green-500 text-white px-3 py-1 mt-2 rounded">Approve</button>
+            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 mt-2 rounded">Approve Request</button>
         `;
 
         container.appendChild(div);
@@ -81,9 +82,12 @@ loadRequests();
 window.approve = async function (id) {
   try {
     const requestRef = doc(db, "exeatRequests", id);
+
     await updateDoc(requestRef, {
-      status: "hostel_approved"
+      status: "hostel_approved",
+      updatedAt: serverTimestamp()
     });
+
     alert("Request approved!");
     loadRequests(); // Reload list
   } catch (error) {

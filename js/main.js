@@ -14,6 +14,10 @@ const firebaseConfig = {
   measurementId: "G-028Y2XQ3LM"
 };
 
+if ("Notification" in window && Notification.permission !== "granted") {
+  Notification.requestPermission();
+}
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

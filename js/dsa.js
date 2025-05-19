@@ -6,7 +6,8 @@ import {
   updateDoc,
   doc,
   query,
-  orderBy
+  orderBy,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
 
 // Firebase config
@@ -85,15 +86,16 @@ async function loadApprovedRequests() {
 
 loadApprovedRequests();
 
-// Updated DSA approval & forward to Gate
+// DSA approval & forward to Gate with timestamp update
 window.approveByDSA = async function(id) {
   try {
     const requestRef = doc(db, "exeatRequests", id);
     await updateDoc(requestRef, {
-      status: "forwarded_to_gate"  // updated status here
+      status: "forwarded_to_gate",  // mark as forwarded to gate
+      updatedAt: serverTimestamp()  // add server timestamp for update tracking
     });
     alert("DSA approved and forwarded the request to the Gate!");
-    loadApprovedRequests();
+    loadApprovedRequests(); // Refresh the list after update
   } catch (error) {
     console.error("Error approving request:", error);
     alert("Failed to approve request.");
