@@ -5,7 +5,9 @@ import {
   collection,
   getDocs,
   updateDoc,
-  doc
+  doc,
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
 
 // Firebase config
@@ -26,16 +28,21 @@ const db = getFirestore(app);
 // Get reference to the container
 const container = document.getElementById("requestList");
 
-// Fetch and render pending exeat requests
+// Fetch and render pending exeat requests in order of createdAt descending
 async function loadRequests() {
   try {
-    const querySnapshot = await getDocs(collection(db, "exeatRequests"));
-    container.innerHTML = ""; // Clear container first
+    const q = query(
+      collection(db, "exeatRequests"),
+      orderBy("createdAt", "desc") // Sort by newest first
+    );
+
+    const querySnapshot = await getDocs(q);
+    container.innerHTML = ""; // Clear container
 
     querySnapshot.forEach((docSnap) => {
       const data = docSnap.data();
 
-      // Ensure fields exist and status is "pending"
+      // Display only pending requests with all necessary fields
       if (
         data.status === "pending" &&
         data.fullName &&
@@ -78,7 +85,7 @@ window.approve = async function (id) {
       status: "hostel_approved"
     });
     alert("Request approved!");
-    loadRequests(); // Reload to reflect changes
+    loadRequests(); // Reload list
   } catch (error) {
     console.error("Error approving request:", error);
     alert("Failed to approve request.");

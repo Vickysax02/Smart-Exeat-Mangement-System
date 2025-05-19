@@ -1,8 +1,6 @@
-// dsa-login.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDfxhSGPNQAneP_iGjdnVSBDrbgidtGWTc",
   authDomain: "smart-exeat-form-system.firebaseapp.com",
@@ -13,20 +11,24 @@ const firebaseConfig = {
   measurementId: "G-028Y2XQ3LM"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Assign login functionality to button
-document.getElementById("loginBtn").addEventListener("click", async () => {
+const loginForm = document.getElementById("loginForm");
+const errorMessage = document.getElementById("errorMessage");
+
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  errorMessage.classList.add("hidden");
   const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const errorElem = document.getElementById("error");
+  const password = document.getElementById("password").value;
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "dsa.html"; // Redirect on success
+    // Redirect to student dashboard on success
+    window.location.href = "student-dashboard.html";
   } catch (error) {
-    errorElem.textContent = "Login failed: " + error.message;
+    errorMessage.textContent = "Login failed: " + error.message;
+    errorMessage.classList.remove("hidden");
   }
 });

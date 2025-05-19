@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DSA Portal - Smart Exeat System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DSA Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
-  <header class="bg-indigo-700 text-white p-6 shadow-md">
-
-    <ul class="text-blue-600 font-bold text-lg flex justify-between p-10">
-            <li><a href="student.html">Student Portal</a></li>
-            <li><a href="dsa-login.html">DSA Portal</a></li>
-            <li><a href="hostel-login.html">Hostel Master</li>
-            <li><a href="gate.html">Gate Portal</a></li>
-    </ul>
-
-    <h1 class="text-2xl font-bold text-center">DSA Portal - Smart Exeat System</h1>
+<body class="bg-gray-100 min-h-screen">
+  <header class="p-6 bg-white shadow text-center">
+    <h1 class="text-2xl font-bold text-blue-700">DSA Portal - Approved Exeat Requests</h1>
   </header>
 
-  <main class="max-w-4xl mx-auto mt-8 p-4">
-    <h2 class="text-xl font-semibold text-gray-700 mb-4">Pending Exeat Requests</h2>
-    <div id="requestsContainer" class="space-y-4"></div>
+  <main class="p-6">
+    <div id="dsaRequestList" class="space-y-4 max-w-3xl mx-auto"></div>
   </main>
 
-  <script type="module" src="dsa.js"></script>
+  <script type="module" src="../js/dsa.js"></script>
 </body>
 </html>

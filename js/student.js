@@ -1,5 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getFirestore, collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  Timestamp
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 // Your Firebase config
 const firebaseConfig = {
@@ -29,19 +34,16 @@ form.addEventListener("submit", async (e) => {
   const parentPhone = document.getElementById("parentPhone").value.trim();
   const reason = document.getElementById("reason").value.trim();
 
-if (!fullName || !matricNo || !department || !parentPhone || !reason) {
-  alert("Please fill all fields");
-  return;
-}
+  if (!fullName || !matricNo || !department || !parentPhone || !reason) {
+    alert("Please fill all fields");
+    return;
+  }
 
-const phoneRegex = /^(070|080|081|090|091)\d{8}$/;
-
-if (!phoneRegex.test(parentPhone)) {
-  alert("Invalid phone number. Must start with 070, 080, 081, 090, or 091 and be 11 digits.");
-  return;
-}
-
-
+  const phoneRegex = /^(070|080|081|090|091)\d{8}$/;
+  if (!phoneRegex.test(parentPhone)) {
+    alert("Invalid phone number. Must start with 070, 080, 081, 090, or 091 and be 11 digits.");
+    return;
+  }
 
   try {
     await addDoc(collection(db, "exeatRequests"), {
@@ -50,8 +52,8 @@ if (!phoneRegex.test(parentPhone)) {
       department,
       parentPhone,
       reason,
-      status: "pending", // pending → approved by hostel → approved by DSA
-      createdAt: Timestamp.now()
+      status: "pending", // pending → hostel_approved → dsa_approved
+      createdAt: Timestamp.now()  // ✅ Time of submission
     });
 
     feedback.classList.remove("hidden");
@@ -61,5 +63,3 @@ if (!phoneRegex.test(parentPhone)) {
     alert("Something went wrong. Try again.");
   }
 });
-
-

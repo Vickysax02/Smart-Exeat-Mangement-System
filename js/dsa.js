@@ -1,11 +1,12 @@
-// dsa.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
 import {
   getFirestore,
   collection,
   getDocs,
   updateDoc,
-  doc
+  doc,
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
 
 // Firebase config
@@ -19,48 +20,82 @@ const firebaseConfig = {
   measurementId: "G-028Y2XQ3LM"
 };
 
-// Initialize Firebase
+// Init Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Get container
-const container = document.getElementById("requestList");
+// Reference to container
+const container = document.getElementById("dsaRequestList");
 
-// Load and render all requests approved by Hostel Master but pending from DSA
-async function loadRequests() {
-  const querySnapshot = await getDocs(collection(db, "exeatRequests"));
+async function loadApprovedRequests() {
+  container.innerHTML = ""; // Clear container
 
-  querySnapshot.forEach((docSnap) => {
-    const data = docSnap.data();
+  try {
+    const q = query(
+      collection(db, "exeatRequests"),
+      orderBy("createdAt", "desc") // Sort by newest first
+    );
 
-    if (data.status === "hostel-approved") {
-      const div = document.createElement("div");
-      div.className = "bg-white p-4 rounded shadow mb-4";
-      div.innerHTML = `
-        <p><strong>Name:</strong> ${data.studentName}</p>
-        <p><strong>Matric Number:</strong> ${data.matricNumber}</p>
-        <p><strong>Reason:</strong> ${data.reason}</p>
-        <p><strong>Parent Phone:</strong> ${data.parentPhone}</p>
-        <button onclick="approveByDSA('${docSnap.id}')" class="bg-green-600 text-white px-3 py-1 mt-2 rounded">Approve</button>
-      `;
-      container.appendChild(div);
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+
+      if (
+        data.status === "hostel_approved" &&
+        data.fullName &&
+        data.matricNo &&
+        data.reason &&
+        data.parentPhone
+      ) {
+        const createdAt = data.createdAt?.toDate?.(); // Convert Firestore Timestamp
+        const formattedTime = createdAt
+          ? createdAt.toLocaleString("en-NG", {
+              dateStyle: "medium",
+              timeStyle: "short"
+            })
+          : "Time not available";
+
+        const div = document.createElement("div");
+        div.className = "bg-white p-4 rounded shadow mb-4";
+
+        div.innerHTML = `
+          <p><strong>Name:</strong> ${data.fullName}</p>
+          <p><strong>Matric Number:</strong> ${data.matricNo}</p>
+          <p><strong>Reason:</strong> ${data.reason}</p>
+          <p><strong>Parent Phone:</strong> ${data.parentPhone}</p>
+          <p><strong>Sent At:</strong> ${formattedTime}</p>
+          <button onclick="approveByDSA('${docSnap.id}')" 
+            class="bg-blue-600 text-white mt-2 px-3 py-1 rounded">Approve & Forward</button>
+        `;
+
+        container.appendChild(div);
+      }
+    });
+
+    if (container.innerHTML === "") {
+      container.innerHTML = `<p class="text-gray-500">No hostel-approved requests found.</p>`;
     }
-  });
+
+  } catch (error) {
+    console.error("Error loading requests:", error);
+    container.innerHTML = `<p class="text-red-500">Failed to load requests.</p>`;
+  }
 }
 
-loadRequests();
+loadApprovedRequests();
 
-// Global approve function
-window.approveByDSA = async function (id) {
+// Updated DSA approval & forward to Gate
+window.approveByDSA = async function(id) {
   try {
-    const docRef = doc(db, "exeatRequests", id);
-    await updateDoc(docRef, {
-      status: "dsa-approved"
+    const requestRef = doc(db, "exeatRequests", id);
+    await updateDoc(requestRef, {
+      status: "forwarded_to_gate"  // updated status here
     });
-    alert("Request approved by DSA");
-    location.reload();
+    alert("DSA approved and forwarded the request to the Gate!");
+    loadApprovedRequests();
   } catch (error) {
     console.error("Error approving request:", error);
-    alert("An error occurred");
+    alert("Failed to approve request.");
   }
 };
