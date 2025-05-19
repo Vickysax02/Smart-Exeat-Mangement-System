@@ -1,27 +1,29 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
 import {
   getFirestore,
   collection,
   addDoc,
-  Timestamp
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js";
 
-// Your Firebase config
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDfxhSGPNQAneP_iGjdnVSBDrbgidtGWTc",
   authDomain: "smart-exeat-form-system.firebaseapp.com",
   projectId: "smart-exeat-form-system",
   storageBucket: "smart-exeat-form-system.appspot.com",
   messagingSenderId: "811475212564",
-  appId: "1:811475212564:web:a635f2c8c8b796915d0a01",
-  measurementId: "G-028Y2XQ3LM"
+  appId: "1:811475212564:web:a635f2c8c8b796915d0a01"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-// Handle form submit
 const form = document.getElementById("exeatForm");
 const feedback = document.getElementById("feedback");
 
@@ -41,7 +43,14 @@ form.addEventListener("submit", async (e) => {
 
   const phoneRegex = /^(070|080|081|090|091)\d{8}$/;
   if (!phoneRegex.test(parentPhone)) {
-    alert("Invalid phone number. Must start with 070, 080, 081, 090, or 091 and be 11 digits.");
+    alert("Invalid phone number.");
+    return;
+  }
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Please login again.");
     return;
   }
 
@@ -52,14 +61,15 @@ form.addEventListener("submit", async (e) => {
       department,
       parentPhone,
       reason,
-      status: "pending", // pending → hostel_approved → dsa_approved
-      createdAt: Timestamp.now()  // ✅ Time of submission
+      status: "pending",
+      email: user.email, // 🔥 Needed for tracking
+      createdAt: serverTimestamp() // 🔥 Needed for sorting
     });
 
     feedback.classList.remove("hidden");
     form.reset();
   } catch (error) {
-    console.error("Error submitting exeat request:", error);
-    alert("Something went wrong. Try again.");
+    console.error("Error:", error);
+    alert("Something went wrong. Please try again.");
   }
 });

@@ -21,3 +21,5 @@ loginForm.addEventListener("submit", async (e) => {
     errorMessage.classList.remove("hidden");
   }
 });
+
+localStorage.setItem("studentEmail", enteredEmail); // Save the student's email
