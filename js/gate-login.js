@@ -22,24 +22,43 @@ const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const loginBtn = document.getElementById("loginBtn");
 const message = document.getElementById("message");
+const loadingMessage = document.getElementById("loadingMessage");
+
+// Show loading message while checking auth state
+loadingMessage.classList.remove("hidden");
+loginBtn.disabled = true;
+
+onAuthStateChanged(auth, (user) => {
+  loadingMessage.classList.add("hidden");
+  loginBtn.disabled = false;
+  if (user) {
+    // User already logged in, redirect to gate.html
+    window.location.href = "gate.html";
+  }
+  // If no user, stay on login page and allow login
+});
 
 loginBtn.addEventListener("click", async () => {
   message.textContent = "";
   const email = emailInput.value.trim();
   const password = passwordInput.value;
 
+  if (!email || !password) {
+    message.textContent = "Please enter both email and password.";
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Logging in...";
+
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    // On successful login, redirect to gate main page
+    // Redirect after successful login
     window.location.href = "gate.html";
   } catch (error) {
     message.textContent = "Login failed: " + error.message;
-  }
-});
-
-// Redirect if already logged in
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = "gate.html";
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Login";
   }
 });

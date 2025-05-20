@@ -2,19 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DSA Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DSA Dashboard - Smart Exeat System</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .fade-in {
+      animation: fadeIn 1.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-  <header class="p-6 bg-white shadow text-center">
-    <h1 class="text-2xl font-bold text-blue-700">DSA Portal - Approved Exeat Requests</h1>
+<body class="bg-gradient-to-br from-pink-100 via-white to-pink-200 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full py-4 px-6 shadow-md" style="background-color: #E46E6E;">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="../">
+          <img src="../images/logo.png" alt="Kings University" class="h-12 object-contain" />
+        </a>
+      </div>
+      <nav class="mt-4 sm:mt-0 flex flex-wrap gap-2 sm:gap-4 text-sm sm:text-base">
+        <a href="../pages/student-login.html" class="bg-white text-pink-700 px-4 py-2 rounded-full font-medium hover:bg-pink-100 transition shadow-md">
+          Student Portal
+        </a>
+        <span class="px-4 py-2 bg-pink-800 text-white rounded-full font-semibold shadow-inner cursor-default">
+          DSA Portal
+        </span>
+        <a href="../pages/gate-login.html" class="bg-white text-pink-700 px-4 py-2 rounded-full font-medium hover:bg-pink-100 transition shadow-md">
+          Gate Portal
+        </a>
+        <a href="../pages/hostel-login.html" class="bg-white text-pink-700 px-4 py-2 rounded-full font-medium hover:bg-pink-100 transition shadow-md">
+          Hostel Portal
+        </a>
+      </nav>
+    </div>
   </header>
 
-  <main class="p-6">
-    <div id="dsaRequestList" class="space-y-4 max-w-3xl mx-auto"></div>
+  <!-- Main Content -->
+  <main class="flex-grow px-4 py-10 fade-in">
+    <div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+      <h1 class="text-3xl font-bold text-pink-600 text-center mb-8">DSA - Approved Exeat Requests</h1>
+      <div id="dsaRequestList" class="space-y-4">
+        <!-- Exeat requests will be injected here by JS -->
+      </div>
+    </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="w-full mt-10 py-4 text-center text-white text-sm shadow-inner" style="background-color: #E46E6E;">
+    &copy; 2025 Smart Exeat System | 300 Level Cybersecurity Project | Designed by Adesola Victor | Kings University
+  </footer>
+
+  <!-- JS Script -->
   <script type="module" src="../js/dsa.js"></script>
 </body>
 </html>

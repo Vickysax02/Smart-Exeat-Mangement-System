@@ -15,16 +15,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Handle login
-document.getElementById("loginBtn").addEventListener("click", async () => {
+// Listen for form submit instead of button click
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault(); // Stop the form from submitting normally
+
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
   const errorElem = document.getElementById("error");
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "hostel.html"; // redirect after login
+    window.location.href = "hostel.html"; // Redirect after successful login
   } catch (error) {
+    errorElem.classList.remove("hidden");
     errorElem.textContent = "Login failed: " + error.message;
   }
 });
