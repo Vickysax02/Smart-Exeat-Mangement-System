@@ -14,14 +14,33 @@
 <body class="min-h-screen flex flex-col">
 
   <!-- Navbar -->
-  <nav class="bg-[#E46E6E] p-4 text-white shadow-md">
-    <div class="max-w-4xl mx-auto flex justify-between items-center">
+
+  <header class="bg-[#E46E6E] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="../" class="flex items-center space-x-3">
+        <img src="../images/logo.png" alt="Kings University Logo" class="h-12 w-auto object-contain" />
+      </a>
       <h1 class="text-xl font-semibold select-none">Smart Exeat System - Gate Portal</h1>
+      <nav class="flex space-x-4 text-sm sm:text-base">
+        <a href="../pages/student-login.html" class="bg-white text-[#E46E6E] px-4 py-2 rounded-full font-semibold hover:bg-pink-100 shadow transition">
+          Student Portal
+        </a>
+        <span class="px-4 py-2 bg-pink-800 text-white rounded-full font-semibold shadow-inner cursor-default select-none">
+          DSA Portal
+        </span>
+        <a href="../pages/gate-login.html" class="bg-white text-[#E46E6E] px-4 py-2 rounded-full font-semibold hover:bg-pink-100 shadow transition">
+          Gate Portal
+        </a>
+        <a href="../pages/hostel-login.html" class="bg-white text-[#E46E6E] px-4 py-2 rounded-full font-semibold hover:bg-pink-100 shadow transition">
+          Hostel Portal
+        </a>
       <button id="logoutBtn" class="bg-pink-700 px-4 py-2 rounded-full hover:bg-pink-800 transition font-semibold shadow">
         Logout
       </button>
+      </nav>
     </div>
-  </nav>
+  </header>
+
 
   <!-- Main content -->
   <main class="flex-grow p-6 max-w-4xl mx-auto w-full">
